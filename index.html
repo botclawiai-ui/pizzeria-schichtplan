@@ -57,6 +57,7 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .mode-btn {
@@ -79,12 +80,12 @@
             background: rgba(255,255,255,0.2);
         }
 
-        /* Admin Section */
-        .admin-section, .employee-section {
+        /* Sections */
+        .admin-section, .employee-section, .calendar-section {
             display: none;
         }
 
-        .admin-section.active, .employee-section.active {
+        .admin-section.active, .employee-section.active, .calendar-section.active {
             display: block;
         }
 
@@ -300,10 +301,16 @@
             color: #fff;
             cursor: pointer;
             font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
         .quick-add button:hover {
             background: rgba(255,255,255,0.1);
+            transform: scale(1.02);
+        }
+
+        .quick-add button:active {
+            transform: scale(0.98);
         }
 
         .notification {
@@ -376,6 +383,174 @@
             margin-bottom: 20px;
         }
 
+        /* Calendar Styles */
+        .calendar-container {
+            margin-top: 20px;
+        }
+
+        .calendar-filter {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .calendar-filter select {
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav button {
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .calendar-nav button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .calendar-nav h3 {
+            font-size: 1.2rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            min-height: 60px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            position: relative;
+            cursor: default;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #ff6b6b;
+        }
+
+        .calendar-day.has-shift {
+            background: rgba(39, 174, 96, 0.3);
+            cursor: pointer;
+        }
+
+        .calendar-day.has-shift:hover {
+            background: rgba(39, 174, 96, 0.5);
+        }
+
+        .calendar-day.working {
+            background: #27ae60;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .calendar-day .day-number {
+            font-size: 1rem;
+        }
+
+        .calendar-day .shift-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+        }
+
+        .calendar-day .shift-indicator.open {
+            background: #ff6b6b;
+        }
+
+        .calendar-day .shift-indicator.filled {
+            background: #27ae60;
+        }
+
+        .employee-legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
+        }
+
         @media (max-width: 600px) {
             .shift-item {
                 flex-direction: column;
@@ -388,6 +563,16 @@
             
             .shift-actions button {
                 flex: 1;
+            }
+
+            .calendar-day {
+                min-height: 45px;
+                font-size: 0.8rem;
+            }
+
+            .calendar-header {
+                font-size: 0.7rem;
+                padding: 5px;
             }
         }
     </style>
@@ -403,6 +588,7 @@
         <div class="mode-toggle">
             <button class="mode-btn active" onclick="setMode('admin')">👨‍💼 Admin</button>
             <button class="mode-btn" onclick="setMode('employee')">👷 Mitarbeiter</button>
+            <button class="mode-btn" onclick="setMode('calendar')">📅 Kalender</button>
         </div>
 
         <!-- Admin Section -->
@@ -422,11 +608,14 @@
                         <h2>📅 Neue Schicht erstellen</h2>
                         
                         <div class="quick-add">
-                            <button onclick="quickAddWeekend()">+ Nächstes Wochenende (Fr-So)</button>
+                            <button onclick="quickAddWeekend()">+ Wochenende (Fr-So)</button>
                             <button onclick="quickAddDay('friday')">+ Freitag</button>
                             <button onclick="quickAddDay('saturday')">+ Samstag</button>
                             <button onclick="quickAddDay('sunday')">+ Sonntag</button>
                         </div>
+                        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 15px;">
+                            💡 Mehrfach klicken fügt weitere Wochen hinzu
+                        </p>
 
                         <div class="form-row">
                             <div class="form-group">
@@ -475,6 +664,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Calendar Section -->
+        <div class="calendar-section">
+            <div class="card">
+                <h2>📅 Schicht-Kalender</h2>
+                
+                <div class="calendar-filter">
+                    <label>Mitarbeiter filtern:</label>
+                    <select id="calendarFilter" onchange="renderCalendar()">
+                        <option value="">Alle anzeigen</option>
+                    </select>
+                </div>
+
+                <div id="statsContainer" class="stats-summary"></div>
+
+                <div class="calendar-container">
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)">← Zurück</button>
+                        <h3 id="calendarTitle">Februar 2026</h3>
+                        <button onclick="changeMonth(1)">Weiter →</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div class="employee-legend" id="employeeLegend"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -516,6 +732,8 @@
                 const data = snapshot.val();
                 shifts = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
                 renderShifts();
+                updateEmployeeFilter();
+                if (currentMode === 'calendar') renderCalendar();
             });
         } catch (e) {
             console.error('Firebase init error:', e);
@@ -531,6 +749,13 @@
         let employeeName = localStorage.getItem('pizzeria_employee_name') || '';
         let isAdminLoggedIn = sessionStorage.getItem('pizzeria_admin') === 'true';
         const ADMIN_PIN = '1234'; // Change this!
+        let currentCalendarDate = new Date();
+
+        // Employee colors for calendar
+        const employeeColors = [
+            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7',
+            '#dfe6e9', '#fd79a8', '#a29bfe', '#6c5ce7', '#00b894'
+        ];
 
         // ============================================
         // INITIALIZATION
@@ -587,13 +812,23 @@
         // ============================================
         function setMode(mode) {
             currentMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.mode-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', 
+                    (mode === 'admin' && i === 0) ||
+                    (mode === 'employee' && i === 1) ||
+                    (mode === 'calendar' && i === 2)
+                );
+            });
             
             document.querySelector('.admin-section').classList.toggle('active', mode === 'admin');
             document.querySelector('.employee-section').classList.toggle('active', mode === 'employee');
+            document.querySelector('.calendar-section').classList.toggle('active', mode === 'calendar');
             
-            renderShifts();
+            if (mode === 'calendar') {
+                renderCalendar();
+            } else {
+                renderShifts();
+            }
         }
 
         // ============================================
@@ -637,15 +872,70 @@
 
         function quickAddWeekend() {
             const today = new Date();
-            const friday = getNextDayOfWeek(today, 5);
-            const saturday = new Date(friday);
-            saturday.setDate(friday.getDate() + 1);
-            const sunday = new Date(friday);
-            sunday.setDate(friday.getDate() + 2);
+            today.setHours(0, 0, 0, 0);
+            
+            // Find next Friday that doesn't have all 3 days (Fri, Sat, Sun) already
+            let friday = getNextDayOfWeek(today, 5);
+            let attempts = 0;
+            const maxAttempts = 52; // Max 1 year ahead
+            
+            while (attempts < maxAttempts) {
+                const saturday = new Date(friday);
+                saturday.setDate(friday.getDate() + 1);
+                const sunday = new Date(friday);
+                sunday.setDate(friday.getDate() + 2);
+                
+                const friStr = friday.toISOString().split('T')[0];
+                const satStr = saturday.toISOString().split('T')[0];
+                const sunStr = sunday.toISOString().split('T')[0];
+                
+                const hasFri = shifts.find(s => s.date === friStr);
+                const hasSat = shifts.find(s => s.date === satStr);
+                const hasSun = shifts.find(s => s.date === sunStr);
+                
+                // If at least one day is missing, add the missing ones
+                if (!hasFri || !hasSat || !hasSun) {
+                    let added = 0;
+                    
+                    if (!hasFri) {
+                        shiftsRef.push({ date: friStr, slots: 1, note: '', employees: [], createdAt: Date.now() });
+                        added++;
+                    }
+                    if (!hasSat) {
+                        shiftsRef.push({ date: satStr, slots: 1, note: '', employees: [], createdAt: Date.now() });
+                        added++;
+                    }
+                    if (!hasSun) {
+                        shiftsRef.push({ date: sunStr, slots: 1, note: '', employees: [], createdAt: Date.now() });
+                        added++;
+                    }
+                    
+                    const weekDate = friday.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+                    showNotification(`${added} Schicht(en) hinzugefügt (${weekDate})`);
+                    return;
+                }
+                
+                // This weekend is complete, try next week
+                friday.setDate(friday.getDate() + 7);
+                attempts++;
+            }
+            
+            showNotification('Keine weiteren Wochenenden verfügbar', 'error');
+        }
 
-            let added = 0;
-            [friday, saturday, sunday].forEach(date => {
-                const dateStr = date.toISOString().split('T')[0];
+        function quickAddDay(day) {
+            const days = { friday: 5, saturday: 6, sunday: 0 };
+            const dayNames = { friday: 'Freitag', saturday: 'Samstag', sunday: 'Sonntag' };
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let targetDay = getNextDayOfWeek(today, days[day]);
+            let attempts = 0;
+            const maxAttempts = 52;
+            
+            while (attempts < maxAttempts) {
+                const dateStr = targetDay.toISOString().split('T')[0];
+                
                 if (!shifts.find(s => s.date === dateStr)) {
                     shiftsRef.push({
                         date: dateStr,
@@ -653,43 +943,29 @@
                         note: '',
                         employees: [],
                         createdAt: Date.now()
+                    }).then(() => {
+                        const formattedDate = targetDay.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+                        showNotification(`${dayNames[day]} ${formattedDate} hinzugefügt!`);
                     });
-                    added++;
+                    return;
                 }
-            });
-
-            if (added > 0) {
-                showNotification(`${added} Schicht(en) hinzugefügt!`);
-            } else {
-                showNotification('Wochenende bereits vorhanden', 'error');
+                
+                // Try next week
+                targetDay.setDate(targetDay.getDate() + 7);
+                attempts++;
             }
-        }
-
-        function quickAddDay(day) {
-            const days = { friday: 5, saturday: 6, sunday: 0 };
-            const nextDay = getNextDayOfWeek(new Date(), days[day]);
-            const dateStr = nextDay.toISOString().split('T')[0];
-
-            if (shifts.find(s => s.date === dateStr)) {
-                showNotification('Schicht existiert bereits', 'error');
-                return;
-            }
-
-            shiftsRef.push({
-                date: dateStr,
-                slots: 1,
-                note: '',
-                employees: [],
-                createdAt: Date.now()
-            }).then(() => {
-                showNotification('Schicht hinzugefügt!');
-            });
+            
+            showNotification(`Keine weiteren ${dayNames[day]}e verfügbar`, 'error');
         }
 
         function getNextDayOfWeek(date, dayOfWeek) {
             const result = new Date(date);
-            result.setDate(result.getDate() + (dayOfWeek + 7 - result.getDay()) % 7);
-            if (result <= date) result.setDate(result.getDate() + 7);
+            const diff = (dayOfWeek + 7 - result.getDay()) % 7;
+            result.setDate(result.getDate() + (diff === 0 ? 0 : diff));
+            // If it's today and already past, or exactly today, use it; otherwise find next
+            if (result < date) {
+                result.setDate(result.getDate() + 7);
+            }
             return result;
         }
 
@@ -759,6 +1035,221 @@
         }
 
         // ============================================
+        // CALENDAR
+        // ============================================
+        function getAllEmployees() {
+            const employees = new Set();
+            shifts.forEach(shift => {
+                (shift.employees || []).forEach(emp => employees.add(emp));
+            });
+            return Array.from(employees).sort();
+        }
+
+        function getEmployeeColor(employee) {
+            const allEmployees = getAllEmployees();
+            const index = allEmployees.indexOf(employee);
+            return employeeColors[index % employeeColors.length];
+        }
+
+        function updateEmployeeFilter() {
+            const select = document.getElementById('calendarFilter');
+            const currentValue = select.value;
+            const employees = getAllEmployees();
+            
+            select.innerHTML = '<option value="">Alle anzeigen</option>';
+            employees.forEach(emp => {
+                select.innerHTML += `<option value="${emp}" ${emp === currentValue ? 'selected' : ''}>${emp}</option>`;
+            });
+        }
+
+        function changeMonth(delta) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const filter = document.getElementById('calendarFilter').value;
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            
+            // Update title
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                               'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            document.getElementById('calendarTitle').textContent = `${monthNames[month]} ${year}`;
+            
+            // Build calendar grid
+            const grid = document.getElementById('calendarGrid');
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDay = (firstDay.getDay() + 6) % 7; // Monday = 0
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Headers
+            const dayHeaders = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+            let html = dayHeaders.map(d => `<div class="calendar-header">${d}</div>`).join('');
+            
+            // Empty cells before first day
+            for (let i = 0; i < startDay; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+            
+            // Days
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const shift = shifts.find(s => s.date === dateStr);
+                const isToday = dateStr === today;
+                
+                let classes = ['calendar-day'];
+                if (isToday) classes.push('today');
+                
+                let indicator = '';
+                let isWorking = false;
+                
+                if (shift) {
+                    const employees = shift.employees || [];
+                    
+                    if (filter) {
+                        // Filtering by employee
+                        if (employees.includes(filter)) {
+                            classes.push('working');
+                            isWorking = true;
+                        } else {
+                            classes.push('has-shift');
+                        }
+                    } else {
+                        classes.push('has-shift');
+                        const isFull = employees.length >= shift.slots;
+                        indicator = `<span class="shift-indicator ${isFull ? 'filled' : 'open'}"></span>`;
+                    }
+                }
+                
+                html += `
+                    <div class="${classes.join(' ')}" ${shift ? `onclick="showShiftDetails('${shift.id}')"` : ''}>
+                        <span class="day-number">${day}</span>
+                        ${indicator}
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+            
+            // Update stats
+            renderStats(filter);
+            
+            // Update legend
+            renderLegend(filter);
+        }
+
+        function renderStats(filter) {
+            const container = document.getElementById('statsContainer');
+            const today = new Date().toISOString().split('T')[0];
+            
+            if (filter) {
+                // Stats for specific employee
+                const workedShifts = shifts.filter(s => 
+                    s.date < today && (s.employees || []).includes(filter)
+                ).length;
+                const upcomingShifts = shifts.filter(s => 
+                    s.date >= today && (s.employees || []).includes(filter)
+                ).length;
+                
+                container.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${workedShifts}</div>
+                        <div class="stat-label">Gearbeitete Schichten</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${upcomingShifts}</div>
+                        <div class="stat-label">Anstehende Schichten</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${workedShifts + upcomingShifts}</div>
+                        <div class="stat-label">Gesamt</div>
+                    </div>
+                `;
+            } else {
+                // General stats
+                const totalShifts = shifts.length;
+                const upcomingShifts = shifts.filter(s => s.date >= today).length;
+                const openSlots = shifts.filter(s => s.date >= today)
+                    .reduce((sum, s) => sum + (s.slots - (s.employees || []).length), 0);
+                
+                container.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${totalShifts}</div>
+                        <div class="stat-label">Schichten gesamt</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${upcomingShifts}</div>
+                        <div class="stat-label">Anstehend</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: ${openSlots > 0 ? '#ff6b6b' : '#27ae60'}">${openSlots}</div>
+                        <div class="stat-label">Offene Plätze</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderLegend(filter) {
+            const container = document.getElementById('employeeLegend');
+            
+            if (filter) {
+                const color = getEmployeeColor(filter);
+                container.innerHTML = `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: ${color}"></div>
+                        <span>${filter} arbeitet</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(39, 174, 96, 0.3)"></div>
+                        <span>Schicht vorhanden</span>
+                    </div>
+                `;
+            } else {
+                const employees = getAllEmployees();
+                let html = employees.map(emp => `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: ${getEmployeeColor(emp)}"></div>
+                        <span>${emp}</span>
+                    </div>
+                `).join('');
+                
+                html += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #27ae60; border-radius: 50%;"></div>
+                        <span>Voll besetzt</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff6b6b; border-radius: 50%;"></div>
+                        <span>Offen</span>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            }
+        }
+
+        function showShiftDetails(shiftId) {
+            const shift = shifts.find(s => s.id === shiftId);
+            if (!shift) return;
+            
+            const date = new Date(shift.date + 'T00:00:00');
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const employees = shift.employees || [];
+            const openSlots = shift.slots - employees.length;
+            
+            let msg = `${dayNames[date.getDay()]}, ${formattedDate}\n`;
+            msg += `Benötigt: ${shift.slots} Mitarbeiter\n`;
+            if (shift.note) msg += `Notiz: ${shift.note}\n`;
+            msg += `\nEingetragen: ${employees.length > 0 ? employees.join(', ') : 'Niemand'}`;
+            if (openSlots > 0) msg += `\n\n⚠️ Noch ${openSlots} Platz/Plätze offen!`;
+            
+            alert(msg);
+        }
+
+        // ============================================
         // RENDERING
         // ============================================
         function renderShifts() {
@@ -798,8 +1289,9 @@
                 for (let i = 0; i < shift.slots; i++) {
                     if (employees[i]) {
                         const canRemove = currentMode === 'admin' || employees[i] === employeeName;
+                        const empColor = getEmployeeColor(employees[i]);
                         slotsHtml += `
-                            <span class="slot filled">
+                            <span class="slot filled" style="background: ${empColor}">
                                 ${employees[i]}
                                 ${canRemove ? `<span class="remove-btn" onclick="signOut('${shift.id}', '${employees[i]}')">✕</span>` : ''}
                             </span>`;
