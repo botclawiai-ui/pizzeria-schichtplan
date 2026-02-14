@@ -38,6 +38,20 @@
             color: #ff6b6b;
         }
 
+        .sync-status {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+        }
+
+        .sync-status.connected {
+            color: #27ae60;
+        }
+
+        .sync-status.disconnected {
+            color: #e74c3c;
+        }
+
         .mode-toggle {
             display: flex;
             justify-content: center;
@@ -162,6 +176,13 @@
             background: #2ecc71;
         }
 
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
         /* Shift List */
         .shift-list {
             display: grid;
@@ -181,6 +202,7 @@
 
         .shift-info {
             flex: 1;
+            min-width: 150px;
         }
 
         .shift-date {
@@ -198,6 +220,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .slot {
@@ -205,6 +228,9 @@
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .slot.filled {
@@ -216,9 +242,19 @@
             border: 1px dashed #ff6b6b;
         }
 
+        .slot .remove-btn {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .slot .remove-btn:hover {
+            opacity: 1;
+        }
+
         .shift-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         /* Employee Name Input */
@@ -233,6 +269,10 @@
             flex-wrap: wrap;
         }
 
+        .employee-input label {
+            color: rgba(255,255,255,0.7);
+        }
+
         .employee-input input {
             flex: 1;
             min-width: 200px;
@@ -242,88 +282,6 @@
             background: rgba(255,255,255,0.1);
             color: #fff;
             font-size: 1rem;
-        }
-
-        /* Calendar View */
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .calendar-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .calendar-nav button {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .calendar-nav button:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .week-view {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .week-view {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .week-view {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .day-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            min-height: 120px;
-        }
-
-        .day-card.has-shift {
-            border: 2px solid #ff6b6b;
-        }
-
-        .day-card .day-name {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 5px;
-        }
-
-        .day-card .day-number {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .day-card .day-slots {
-            font-size: 0.85rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .empty-state p {
-            margin-bottom: 15px;
         }
 
         /* Quick Add Buttons */
@@ -370,6 +328,68 @@
                 opacity: 1;
             }
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Admin PIN */
+        .admin-login {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .admin-login input {
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 10px;
+            width: 200px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .admin-login p {
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .shift-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .shift-actions {
+                width: 100%;
+            }
+            
+            .shift-actions button {
+                flex: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -377,6 +397,7 @@
         <header>
             <h1>🍕 <span>Pizzeria</span> Schichtplan</h1>
             <p>Einfache Schichtplanung für dein Team</p>
+            <div id="syncStatus" class="sync-status">Verbinde...</div>
         </header>
 
         <div class="mode-toggle">
@@ -386,41 +407,54 @@
 
         <!-- Admin Section -->
         <div class="admin-section active">
-            <div class="card">
-                <h2>📅 Neue Schicht erstellen</h2>
-                
-                <div class="quick-add">
-                    <button onclick="quickAddWeekend()">+ Nächstes Wochenende (Fr-So)</button>
-                    <button onclick="quickAddDay('friday')">+ Freitag</button>
-                    <button onclick="quickAddDay('saturday')">+ Samstag</button>
-                    <button onclick="quickAddDay('sunday')">+ Sonntag</button>
+            <div id="adminContent">
+                <!-- Admin PIN Login -->
+                <div id="adminLogin" class="card admin-login">
+                    <p>Admin-PIN eingeben:</p>
+                    <input type="password" id="adminPin" maxlength="4" placeholder="****" onkeyup="checkAdminPin(event)">
+                    <br>
+                    <button class="btn btn-primary" onclick="verifyAdminPin()">Anmelden</button>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Datum</label>
-                        <input type="date" id="shiftDate">
-                    </div>
-                    <div class="form-group">
-                        <label>Mitarbeiter benötigt</label>
-                        <select id="shiftSlots">
-                            <option value="1">1 Mitarbeiter</option>
-                            <option value="2">2 Mitarbeiter</option>
-                            <option value="3">3 Mitarbeiter</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Notiz (optional)</label>
-                        <input type="text" id="shiftNote" placeholder="z.B. Feiertag, Event...">
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="addShift()">Schicht hinzufügen</button>
-            </div>
+                <!-- Admin Dashboard (hidden until PIN entered) -->
+                <div id="adminDashboard" style="display: none;">
+                    <div class="card">
+                        <h2>📅 Neue Schicht erstellen</h2>
+                        
+                        <div class="quick-add">
+                            <button onclick="quickAddWeekend()">+ Nächstes Wochenende (Fr-So)</button>
+                            <button onclick="quickAddDay('friday')">+ Freitag</button>
+                            <button onclick="quickAddDay('saturday')">+ Samstag</button>
+                            <button onclick="quickAddDay('sunday')">+ Sonntag</button>
+                        </div>
 
-            <div class="card">
-                <h2>📋 Aktuelle Schichten</h2>
-                <div id="adminShiftList" class="shift-list">
-                    <!-- Shifts will be rendered here -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Datum</label>
+                                <input type="date" id="shiftDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Mitarbeiter benötigt</label>
+                                <select id="shiftSlots">
+                                    <option value="1">1 Mitarbeiter</option>
+                                    <option value="2">2 Mitarbeiter</option>
+                                    <option value="3">3 Mitarbeiter</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Notiz (optional)</label>
+                                <input type="text" id="shiftNote" placeholder="z.B. Feiertag, Event...">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="addShift()">Schicht hinzufügen</button>
+                    </div>
+
+                    <div class="card">
+                        <h2>📋 Aktuelle Schichten</h2>
+                        <div id="adminShiftList" class="shift-list">
+                            <div class="loading">Lade Schichten</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -435,32 +469,126 @@
 
             <div class="card">
                 <h2>📅 Verfügbare Schichten</h2>
-                <p style="margin-bottom: 20px; color: rgba(255,255,255,0.6);">Klicke auf eine freie Schicht um dich einzutragen</p>
+                <p style="margin-bottom: 20px; color: rgba(255,255,255,0.6);">Klicke auf "Eintragen" um dich für eine Schicht anzumelden</p>
                 <div id="employeeShiftList" class="shift-list">
-                    <!-- Shifts will be rendered here -->
+                    <div class="loading">Lade Schichten</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
     <script>
-        // State
-        let shifts = JSON.parse(localStorage.getItem('pizzeria_shifts') || '[]');
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpQedD4r3De3xKj0cWW3Y7sbKRSGF7CfQ",
+            authDomain: "pizzeria-schichtplan.firebaseapp.com",
+            databaseURL: "https://pizzeria-schichtplan-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "pizzeria-schichtplan",
+            storageBucket: "pizzeria-schichtplan.firebasestorage.app",
+            messagingSenderId: "844621034751",
+            appId: "1:844621034751:web:a3b8d4e5c6f7g8h9i0j1"
+        };
+
+        // Initialize Firebase
+        let db;
+        let shiftsRef;
+        let isConnected = false;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            shiftsRef = db.ref('shifts');
+            
+            // Monitor connection
+            db.ref('.info/connected').on('value', (snap) => {
+                isConnected = snap.val() === true;
+                updateSyncStatus();
+            });
+
+            // Listen for shifts changes
+            shiftsRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                shifts = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+                renderShifts();
+            });
+        } catch (e) {
+            console.error('Firebase init error:', e);
+            document.getElementById('syncStatus').textContent = '⚠️ Offline-Modus';
+            document.getElementById('syncStatus').className = 'sync-status disconnected';
+        }
+
+        // ============================================
+        // STATE
+        // ============================================
+        let shifts = [];
         let currentMode = 'admin';
         let employeeName = localStorage.getItem('pizzeria_employee_name') || '';
+        let isAdminLoggedIn = sessionStorage.getItem('pizzeria_admin') === 'true';
+        const ADMIN_PIN = '1234'; // Change this!
 
-        // Initialize
+        // ============================================
+        // INITIALIZATION
+        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('employeeName').value = employeeName;
             document.getElementById('shiftDate').valueAsDate = new Date();
-            renderShifts();
+            
+            if (isAdminLoggedIn) {
+                showAdminDashboard();
+            }
         });
 
-        // Mode Toggle
+        function updateSyncStatus() {
+            const el = document.getElementById('syncStatus');
+            if (isConnected) {
+                el.textContent = '🟢 Synchronisiert';
+                el.className = 'sync-status connected';
+            } else {
+                el.textContent = '🔴 Offline';
+                el.className = 'sync-status disconnected';
+            }
+        }
+
+        // ============================================
+        // ADMIN AUTH
+        // ============================================
+        function checkAdminPin(event) {
+            if (event.key === 'Enter') {
+                verifyAdminPin();
+            }
+        }
+
+        function verifyAdminPin() {
+            const pin = document.getElementById('adminPin').value;
+            if (pin === ADMIN_PIN) {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('pizzeria_admin', 'true');
+                showAdminDashboard();
+                showNotification('Admin angemeldet!');
+            } else {
+                showNotification('Falscher PIN!', 'error');
+                document.getElementById('adminPin').value = '';
+            }
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+        }
+
+        // ============================================
+        // MODE TOGGLE
+        // ============================================
         function setMode(mode) {
             currentMode = mode;
             document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.mode-btn:${mode === 'admin' ? 'first-child' : 'last-child'}`).classList.add('active');
+            event.target.classList.add('active');
             
             document.querySelector('.admin-section').classList.toggle('active', mode === 'admin');
             document.querySelector('.employee-section').classList.toggle('active', mode === 'employee');
@@ -468,7 +596,9 @@
             renderShifts();
         }
 
-        // Add Shift
+        // ============================================
+        // SHIFT MANAGEMENT
+        // ============================================
         function addShift() {
             const date = document.getElementById('shiftDate').value;
             const slots = parseInt(document.getElementById('shiftSlots').value);
@@ -485,23 +615,26 @@
                 return;
             }
 
-            shifts.push({
-                id: Date.now(),
+            const newShift = {
                 date: date,
                 slots: slots,
                 note: note,
-                employees: []
-            });
+                employees: [],
+                createdAt: Date.now()
+            };
 
-            saveShifts();
-            renderShifts();
-            showNotification('Schicht hinzugefügt!');
-            
-            // Reset form
-            document.getElementById('shiftNote').value = '';
+            // Save to Firebase
+            shiftsRef.push(newShift)
+                .then(() => {
+                    showNotification('Schicht hinzugefügt!');
+                    document.getElementById('shiftNote').value = '';
+                })
+                .catch(err => {
+                    showNotification('Fehler beim Speichern', 'error');
+                    console.error(err);
+                });
         }
 
-        // Quick Add Functions
         function quickAddWeekend() {
             const today = new Date();
             const friday = getNextDayOfWeek(today, 5);
@@ -510,22 +643,26 @@
             const sunday = new Date(friday);
             sunday.setDate(friday.getDate() + 2);
 
+            let added = 0;
             [friday, saturday, sunday].forEach(date => {
                 const dateStr = date.toISOString().split('T')[0];
                 if (!shifts.find(s => s.date === dateStr)) {
-                    shifts.push({
-                        id: Date.now() + Math.random(),
+                    shiftsRef.push({
                         date: dateStr,
                         slots: 1,
                         note: '',
-                        employees: []
+                        employees: [],
+                        createdAt: Date.now()
                     });
+                    added++;
                 }
             });
 
-            saveShifts();
-            renderShifts();
-            showNotification('Wochenende hinzugefügt!');
+            if (added > 0) {
+                showNotification(`${added} Schicht(en) hinzugefügt!`);
+            } else {
+                showNotification('Wochenende bereits vorhanden', 'error');
+            }
         }
 
         function quickAddDay(day) {
@@ -538,17 +675,15 @@
                 return;
             }
 
-            shifts.push({
-                id: Date.now(),
+            shiftsRef.push({
                 date: dateStr,
                 slots: 1,
                 note: '',
-                employees: []
+                employees: [],
+                createdAt: Date.now()
+            }).then(() => {
+                showNotification('Schicht hinzugefügt!');
             });
-
-            saveShifts();
-            renderShifts();
-            showNotification('Schicht hinzugefügt!');
         }
 
         function getNextDayOfWeek(date, dayOfWeek) {
@@ -558,17 +693,23 @@
             return result;
         }
 
-        // Delete Shift
         function deleteShift(id) {
             if (confirm('Schicht wirklich löschen?')) {
-                shifts = shifts.filter(s => s.id !== id);
-                saveShifts();
-                renderShifts();
-                showNotification('Schicht gelöscht');
+                shiftsRef.child(id).remove()
+                    .then(() => showNotification('Schicht gelöscht'))
+                    .catch(err => showNotification('Fehler beim Löschen', 'error'));
             }
         }
 
-        // Sign Up for Shift
+        function updateSlots(id, newSlots) {
+            shiftsRef.child(id).update({ slots: newSlots })
+                .then(() => showNotification('Aktualisiert'))
+                .catch(err => showNotification('Fehler', 'error'));
+        }
+
+        // ============================================
+        // EMPLOYEE ACTIONS
+        // ============================================
         function signUp(shiftId) {
             const name = employeeName || document.getElementById('employeeName').value;
             if (!name) {
@@ -579,41 +720,47 @@
             const shift = shifts.find(s => s.id === shiftId);
             if (!shift) return;
 
-            if (shift.employees.includes(name)) {
+            const employees = shift.employees || [];
+            
+            if (employees.includes(name)) {
                 showNotification('Du bist bereits eingetragen', 'error');
                 return;
             }
 
-            if (shift.employees.length >= shift.slots) {
+            if (employees.length >= shift.slots) {
                 showNotification('Schicht ist bereits voll', 'error');
                 return;
             }
 
-            shift.employees.push(name);
-            saveShifts();
-            renderShifts();
-            showNotification('Erfolgreich eingetragen!');
+            employees.push(name);
+            shiftsRef.child(shiftId).update({ employees })
+                .then(() => showNotification('Erfolgreich eingetragen!'))
+                .catch(err => showNotification('Fehler', 'error'));
         }
 
-        // Sign Out from Shift
         function signOut(shiftId, name) {
             const shift = shifts.find(s => s.id === shiftId);
             if (!shift) return;
 
-            shift.employees = shift.employees.filter(e => e !== name);
-            saveShifts();
-            renderShifts();
-            showNotification('Austragung erfolgreich');
+            const employees = (shift.employees || []).filter(e => e !== name);
+            shiftsRef.child(shiftId).update({ employees })
+                .then(() => showNotification('Ausgetragen'))
+                .catch(err => showNotification('Fehler', 'error'));
         }
 
-        // Save Employee Name
         function saveEmployeeName() {
-            employeeName = document.getElementById('employeeName').value;
+            employeeName = document.getElementById('employeeName').value.trim();
+            if (!employeeName) {
+                showNotification('Bitte Namen eingeben', 'error');
+                return;
+            }
             localStorage.setItem('pizzeria_employee_name', employeeName);
             showNotification('Name gespeichert!');
         }
 
-        // Render Shifts
+        // ============================================
+        // RENDERING
+        // ============================================
         function renderShifts() {
             const container = currentMode === 'admin' 
                 ? document.getElementById('adminShiftList')
@@ -638,18 +785,24 @@
             }
 
             container.innerHTML = filteredShifts.map(shift => {
-                const date = new Date(shift.date);
+                const date = new Date(shift.date + 'T00:00:00');
                 const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
                 const dayName = dayNames[date.getDay()];
                 const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 
-                const openSlots = shift.slots - shift.employees.length;
+                const employees = shift.employees || [];
+                const openSlots = shift.slots - employees.length;
                 const isPast = shift.date < today;
 
                 let slotsHtml = '';
                 for (let i = 0; i < shift.slots; i++) {
-                    if (shift.employees[i]) {
-                        slotsHtml += `<span class="slot filled">${shift.employees[i]} ${currentMode === 'admin' || shift.employees[i] === employeeName ? `<span onclick="signOut(${shift.id}, '${shift.employees[i]}')" style="cursor:pointer">✕</span>` : ''}</span>`;
+                    if (employees[i]) {
+                        const canRemove = currentMode === 'admin' || employees[i] === employeeName;
+                        slotsHtml += `
+                            <span class="slot filled">
+                                ${employees[i]}
+                                ${canRemove ? `<span class="remove-btn" onclick="signOut('${shift.id}', '${employees[i]}')">✕</span>` : ''}
+                            </span>`;
                     } else {
                         slotsHtml += `<span class="slot open">Frei</span>`;
                     }
@@ -666,10 +819,19 @@
                         </div>
                         <div class="shift-actions">
                             ${currentMode === 'admin' 
-                                ? `<button class="btn btn-danger" onclick="deleteShift(${shift.id})">Löschen</button>`
+                                ? `
+                                    <select onchange="updateSlots('${shift.id}', parseInt(this.value))" class="btn btn-secondary" style="padding: 8px;">
+                                        <option value="1" ${shift.slots === 1 ? 'selected' : ''}>1 MA</option>
+                                        <option value="2" ${shift.slots === 2 ? 'selected' : ''}>2 MA</option>
+                                        <option value="3" ${shift.slots === 3 ? 'selected' : ''}>3 MA</option>
+                                    </select>
+                                    <button class="btn btn-danger" onclick="deleteShift('${shift.id}')">Löschen</button>
+                                `
                                 : openSlots > 0 && !isPast
-                                    ? `<button class="btn btn-success" onclick="signUp(${shift.id})">Eintragen</button>`
-                                    : ''
+                                    ? `<button class="btn btn-success" onclick="signUp('${shift.id}')">Eintragen</button>`
+                                    : isPast 
+                                        ? '<span style="color: rgba(255,255,255,0.4)">Vergangen</span>'
+                                        : '<span style="color: #27ae60">✓ Voll</span>'
                             }
                         </div>
                     </div>
@@ -677,12 +839,9 @@
             }).join('');
         }
 
-        // Save to LocalStorage
-        function saveShifts() {
-            localStorage.setItem('pizzeria_shifts', JSON.stringify(shifts));
-        }
-
-        // Notification
+        // ============================================
+        // NOTIFICATIONS
+        // ============================================
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = 'notification';
