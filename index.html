@@ -748,7 +748,7 @@
         let currentMode = 'admin';
         let employeeName = localStorage.getItem('pizzeria_employee_name') || '';
         let isAdminLoggedIn = sessionStorage.getItem('pizzeria_admin') === 'true';
-        const ADMIN_PIN = '1234'; // Change this!
+        const ADMIN_PIN = '7391';
         let currentCalendarDate = new Date();
 
         // Employee colors for calendar
@@ -885,9 +885,9 @@
                 const sunday = new Date(friday);
                 sunday.setDate(friday.getDate() + 2);
                 
-                const friStr = friday.toISOString().split('T')[0];
-                const satStr = saturday.toISOString().split('T')[0];
-                const sunStr = sunday.toISOString().split('T')[0];
+                const friStr = formatLocalDate(friday);
+                const satStr = formatLocalDate(saturday);
+                const sunStr = formatLocalDate(sunday);
                 
                 const hasFri = shifts.find(s => s.date === friStr);
                 const hasSat = shifts.find(s => s.date === satStr);
@@ -934,7 +934,7 @@
             const maxAttempts = 52;
             
             while (attempts < maxAttempts) {
-                const dateStr = targetDay.toISOString().split('T')[0];
+                const dateStr = formatLocalDate(targetDay);
                 
                 if (!shifts.find(s => s.date === dateStr)) {
                     shiftsRef.push({
@@ -956,6 +956,13 @@
             }
             
             showNotification(`Keine weiteren ${dayNames[day]}e verfügbar`, 'error');
+        }
+
+        function formatLocalDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
         function getNextDayOfWeek(date, dayOfWeek) {
