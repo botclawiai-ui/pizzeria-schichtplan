@@ -81,11 +81,11 @@
         }
 
         /* Sections */
-        .admin-section, .employee-section, .calendar-section {
+        .admin-section, .employee-section, .calendar-section, .timetrack-section {
             display: none;
         }
 
-        .admin-section.active, .employee-section.active, .calendar-section.active {
+        .admin-section.active, .employee-section.active, .calendar-section.active, .timetrack-section.active {
             display: block;
         }
 
@@ -102,6 +102,12 @@
             margin-bottom: 20px;
             font-size: 1.3rem;
             color: #ff6b6b;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
         }
 
         .form-row {
@@ -138,7 +144,8 @@
             border-color: #ff6b6b;
         }
 
-        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator,
+        .form-group input[type="time"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
 
@@ -182,6 +189,19 @@
             color: #fff;
             padding: 8px 16px;
             font-size: 0.85rem;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .btn-large {
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            border-radius: 15px;
         }
 
         /* Shift List */
@@ -258,31 +278,139 @@
             flex-wrap: wrap;
         }
 
-        /* Employee Name Input */
-        .employee-input {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
+        /* Employee List */
+        .employee-list {
+            display: grid;
+            gap: 10px;
         }
 
-        .employee-input label {
+        .employee-item {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .employee-item.inactive {
+            opacity: 0.5;
+        }
+
+        .employee-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Time Tracking */
+        .time-tracker-main {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .current-time {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .current-date {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-display.running {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .time-entry-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .time-entry {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .time-entry.running {
+            border: 2px solid #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .time-entry-info {
+            flex: 1;
+        }
+
+        .time-entry-date {
+            font-weight: 600;
+        }
+
+        .time-entry-times {
+            font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
         }
 
-        .employee-input input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+        .time-entry-duration {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        /* Hours Summary */
+        .hours-summary {
+            display: grid;
+            gap: 15px;
+        }
+
+        .hours-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .hours-employee {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .hours-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .hours-value small {
             font-size: 1rem;
+            color: rgba(255,255,255,0.6);
         }
 
         /* Quick Add Buttons */
@@ -381,6 +509,43 @@
         .admin-login p {
             color: rgba(255,255,255,0.5);
             margin-bottom: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         /* Calendar Styles */
@@ -551,6 +716,76 @@
             margin-top: 5px;
         }
 
+        /* Month Selector */
+        .month-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .month-selector select {
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            color: #ff6b6b;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
         @media (max-width: 600px) {
             .shift-item {
                 flex-direction: column;
@@ -574,6 +809,14 @@
                 font-size: 0.7rem;
                 padding: 5px;
             }
+
+            .current-time {
+                font-size: 2rem;
+            }
+
+            .timer-display {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -587,7 +830,8 @@
 
         <div class="mode-toggle">
             <button class="mode-btn active" onclick="setMode('admin')">👨‍💼 Admin</button>
-            <button class="mode-btn" onclick="setMode('employee')">👷 Mitarbeiter</button>
+            <button class="mode-btn" onclick="setMode('employee')">👷 Schichten</button>
+            <button class="mode-btn" onclick="setMode('timetrack')">⏱️ Zeiterfassung</button>
             <button class="mode-btn" onclick="setMode('calendar')">📅 Kalender</button>
         </div>
 
@@ -604,56 +848,111 @@
 
                 <!-- Admin Dashboard (hidden until PIN entered) -->
                 <div id="adminDashboard" style="display: none;">
-                    <div class="card">
-                        <h2>📅 Neue Schicht erstellen</h2>
-                        
-                        <div class="quick-add">
-                            <button onclick="quickAddWeekend()">+ Wochenende (Fr-So)</button>
-                            <button onclick="quickAddDay('friday')">+ Freitag</button>
-                            <button onclick="quickAddDay('saturday')">+ Samstag</button>
-                            <button onclick="quickAddDay('sunday')">+ Sonntag</button>
-                        </div>
-                        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 15px;">
-                            💡 Mehrfach klicken fügt weitere Wochen hinzu
-                        </p>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Datum</label>
-                                <input type="date" id="shiftDate">
-                            </div>
-                            <div class="form-group">
-                                <label>Mitarbeiter benötigt</label>
-                                <select id="shiftSlots">
-                                    <option value="1">1 Mitarbeiter</option>
-                                    <option value="2">2 Mitarbeiter</option>
-                                    <option value="3">3 Mitarbeiter</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Notiz (optional)</label>
-                                <input type="text" id="shiftNote" placeholder="z.B. Feiertag, Event...">
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="addShift()">Schicht hinzufügen</button>
+                    <!-- Admin Tabs -->
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="setAdminTab('shifts')">📅 Schichten</button>
+                        <button class="tab-btn" onclick="setAdminTab('employees')">👥 Mitarbeiter</button>
+                        <button class="tab-btn" onclick="setAdminTab('hours')">⏱️ Arbeitszeiten</button>
                     </div>
 
-                    <div class="card">
-                        <h2>📋 Aktuelle Schichten</h2>
-                        <div id="adminShiftList" class="shift-list">
-                            <div class="loading">Lade Schichten</div>
+                    <!-- Shifts Tab -->
+                    <div id="adminShiftsTab" class="tab-content active">
+                        <div class="card">
+                            <h2>📅 Neue Schicht erstellen</h2>
+                            
+                            <div class="quick-add">
+                                <button onclick="quickAddWeekend()">+ Wochenende (Fr-So)</button>
+                                <button onclick="quickAddDay('friday')">+ Freitag</button>
+                                <button onclick="quickAddDay('saturday')">+ Samstag</button>
+                                <button onclick="quickAddDay('sunday')">+ Sonntag</button>
+                            </div>
+                            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 15px;">
+                                💡 Mehrfach klicken fügt weitere Wochen hinzu
+                            </p>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Datum</label>
+                                    <input type="date" id="shiftDate">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mitarbeiter benötigt</label>
+                                    <select id="shiftSlots">
+                                        <option value="1">1 Mitarbeiter</option>
+                                        <option value="2">2 Mitarbeiter</option>
+                                        <option value="3">3 Mitarbeiter</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Notiz (optional)</label>
+                                    <input type="text" id="shiftNote" placeholder="z.B. Feiertag, Event...">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="addShift()">Schicht hinzufügen</button>
+                        </div>
+
+                        <div class="card">
+                            <h2>📋 Aktuelle Schichten</h2>
+                            <div id="adminShiftList" class="shift-list">
+                                <div class="loading">Lade Schichten</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employees Tab -->
+                    <div id="adminEmployeesTab" class="tab-content">
+                        <div class="card">
+                            <h2>👥 Mitarbeiter verwalten</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Neuer Mitarbeiter</label>
+                                    <input type="text" id="newEmployeeName" placeholder="Name eingeben...">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="addEmployee()">Mitarbeiter hinzufügen</button>
+                        </div>
+
+                        <div class="card">
+                            <h2>📋 Mitarbeiterliste</h2>
+                            <div id="employeeList" class="employee-list">
+                                <div class="loading">Lade Mitarbeiter</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hours Tab -->
+                    <div id="adminHoursTab" class="tab-content">
+                        <div class="card">
+                            <h2>⏱️ Arbeitszeiten Übersicht</h2>
+                            
+                            <div class="month-selector">
+                                <label>Monat:</label>
+                                <select id="hoursMonth" onchange="renderHoursSummary()"></select>
+                                <select id="hoursYear" onchange="renderHoursSummary()"></select>
+                            </div>
+
+                            <div id="hoursSummary" class="hours-summary">
+                                <div class="loading">Lade Arbeitszeiten</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Employee Section -->
+        <!-- Employee Section (Shift Sign-up) -->
         <div class="employee-section">
-            <div class="employee-input">
-                <label>Dein Name:</label>
-                <input type="text" id="employeeName" placeholder="Name eingeben...">
-                <button class="btn btn-primary" onclick="saveEmployeeName()">Speichern</button>
+            <div class="card">
+                <h2>👷 Mitarbeiter auswählen</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dein Name</label>
+                        <select id="employeeSelect" onchange="saveSelectedEmployee()">
+                            <option value="">-- Mitarbeiter wählen --</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
@@ -661,6 +960,42 @@
                 <p style="margin-bottom: 20px; color: rgba(255,255,255,0.6);">Klicke auf "Eintragen" um dich für eine Schicht anzumelden</p>
                 <div id="employeeShiftList" class="shift-list">
                     <div class="loading">Lade Schichten</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Tracking Section -->
+        <div class="timetrack-section">
+            <div class="card">
+                <h2>👷 Mitarbeiter auswählen</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dein Name</label>
+                        <select id="timetrackEmployeeSelect" onchange="saveTimetrackEmployee()">
+                            <option value="">-- Mitarbeiter wählen --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timeTrackerCard" class="card" style="display: none;">
+                <div class="time-tracker-main">
+                    <div id="currentTime" class="current-time">00:00:00</div>
+                    <div id="currentDate" class="current-date">Sonntag, 15. Februar 2026</div>
+                    
+                    <div id="timerDisplay" class="timer-display" style="display: none;">00:00:00</div>
+                    
+                    <div id="timerButtons">
+                        <button id="startBtn" class="btn btn-success btn-large" onclick="startTimer()">▶️ Start</button>
+                        <button id="stopBtn" class="btn btn-danger btn-large" onclick="stopTimer()" style="display: none;">⏹️ Stopp</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timeEntriesCard" class="card" style="display: none;">
+                <h2>📋 Meine Zeiteinträge</h2>
+                <div id="timeEntryList" class="time-entry-list">
+                    <div class="empty-state">Noch keine Einträge</div>
                 </div>
             </div>
         </div>
@@ -693,6 +1028,36 @@
         </div>
     </div>
 
+    <!-- Edit Time Entry Modal -->
+    <div id="editTimeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⏱️ Zeit bearbeiten</h3>
+                <button class="modal-close" onclick="closeEditTimeModal()">&times;</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Datum</label>
+                    <input type="date" id="editTimeDate">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Startzeit</label>
+                    <input type="time" id="editTimeStart">
+                </div>
+                <div class="form-group">
+                    <label>Endzeit</label>
+                    <input type="time" id="editTimeEnd">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="saveEditedTime()">Speichern</button>
+                <button class="btn btn-danger" onclick="deleteTimeEntry()">Löschen</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -714,12 +1079,16 @@
         // Initialize Firebase
         let db;
         let shiftsRef;
+        let employeesRef;
+        let timeEntriesRef;
         let isConnected = false;
 
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             shiftsRef = db.ref('shifts');
+            employeesRef = db.ref('employees');
+            timeEntriesRef = db.ref('timeEntries');
             
             // Monitor connection
             db.ref('.info/connected').on('value', (snap) => {
@@ -732,8 +1101,24 @@
                 const data = snapshot.val();
                 shifts = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
                 renderShifts();
-                updateEmployeeFilter();
+                updateCalendarEmployeeFilter();
                 if (currentMode === 'calendar') renderCalendar();
+            });
+
+            // Listen for employees changes
+            employeesRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                employees = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+                renderEmployeeList();
+                updateEmployeeSelects();
+            });
+
+            // Listen for time entries changes
+            timeEntriesRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                timeEntries = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+                renderTimeEntries();
+                if (currentAdminTab === 'hours') renderHoursSummary();
             });
         } catch (e) {
             console.error('Firebase init error:', e);
@@ -745,11 +1130,18 @@
         // STATE
         // ============================================
         let shifts = [];
+        let employees = [];
+        let timeEntries = [];
         let currentMode = 'admin';
-        let employeeName = localStorage.getItem('pizzeria_employee_name') || '';
+        let currentAdminTab = 'shifts';
+        let selectedEmployeeId = localStorage.getItem('pizzeria_selected_employee') || '';
+        let timetrackEmployeeId = localStorage.getItem('pizzeria_timetrack_employee') || '';
         let isAdminLoggedIn = sessionStorage.getItem('pizzeria_admin') === 'true';
         const ADMIN_PIN = '7391';
         let currentCalendarDate = new Date();
+        let activeTimerInterval = null;
+        let activeTimeEntryId = null;
+        let editingTimeEntryId = null;
 
         // Employee colors for calendar
         const employeeColors = [
@@ -758,15 +1150,70 @@
         ];
 
         // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        function formatLocalDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getTodayStr() {
+            return formatLocalDate(new Date());
+        }
+
+        function getNextDayOfWeek(date, dayOfWeek) {
+            const result = new Date(date);
+            result.setHours(0, 0, 0, 0);
+            const diff = (dayOfWeek + 7 - result.getDay()) % 7;
+            result.setDate(result.getDate() + (diff === 0 ? 0 : diff));
+            if (result < date) {
+                result.setDate(result.getDate() + 7);
+            }
+            return result;
+        }
+
+        function formatDuration(minutes) {
+            if (minutes === null || minutes === undefined) return '--';
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            return `${hours},${Math.round(mins / 60 * 10)}h`;
+        }
+
+        function formatDurationHMS(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function getEmployeeById(id) {
+            return employees.find(e => e.id === id);
+        }
+
+        function getEmployeeName(id) {
+            const emp = getEmployeeById(id);
+            return emp ? emp.name : 'Unbekannt';
+        }
+
+        // ============================================
         // INITIALIZATION
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('employeeName').value = employeeName;
-            document.getElementById('shiftDate').valueAsDate = new Date();
+            document.getElementById('shiftDate').value = formatLocalDate(new Date());
             
             if (isAdminLoggedIn) {
                 showAdminDashboard();
             }
+
+            // Initialize month/year selectors
+            initHoursSelectors();
+
+            // Start clock
+            updateClock();
+            setInterval(updateClock, 1000);
         });
 
         function updateSyncStatus() {
@@ -778,6 +1225,22 @@
                 el.textContent = '🔴 Offline';
                 el.className = 'sync-status disconnected';
             }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('de-DE');
+            const dateStr = now.toLocaleDateString('de-DE', { 
+                weekday: 'long', 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            const timeEl = document.getElementById('currentTime');
+            const dateEl = document.getElementById('currentDate');
+            if (timeEl) timeEl.textContent = timeStr;
+            if (dateEl) dateEl.textContent = dateStr;
         }
 
         // ============================================
@@ -808,7 +1271,7 @@
         }
 
         // ============================================
-        // MODE TOGGLE
+        // MODE & TAB TOGGLE
         // ============================================
         function setMode(mode) {
             currentMode = mode;
@@ -816,18 +1279,161 @@
                 btn.classList.toggle('active', 
                     (mode === 'admin' && i === 0) ||
                     (mode === 'employee' && i === 1) ||
-                    (mode === 'calendar' && i === 2)
+                    (mode === 'timetrack' && i === 2) ||
+                    (mode === 'calendar' && i === 3)
                 );
             });
             
             document.querySelector('.admin-section').classList.toggle('active', mode === 'admin');
             document.querySelector('.employee-section').classList.toggle('active', mode === 'employee');
+            document.querySelector('.timetrack-section').classList.toggle('active', mode === 'timetrack');
             document.querySelector('.calendar-section').classList.toggle('active', mode === 'calendar');
             
             if (mode === 'calendar') {
                 renderCalendar();
+            } else if (mode === 'timetrack') {
+                checkActiveTimer();
             } else {
                 renderShifts();
+            }
+        }
+
+        function setAdminTab(tab) {
+            currentAdminTab = tab;
+            document.querySelectorAll('.tabs .tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active',
+                    (tab === 'shifts' && i === 0) ||
+                    (tab === 'employees' && i === 1) ||
+                    (tab === 'hours' && i === 2)
+                );
+            });
+
+            document.getElementById('adminShiftsTab').classList.toggle('active', tab === 'shifts');
+            document.getElementById('adminEmployeesTab').classList.toggle('active', tab === 'employees');
+            document.getElementById('adminHoursTab').classList.toggle('active', tab === 'hours');
+
+            if (tab === 'hours') {
+                renderHoursSummary();
+            }
+        }
+
+        // ============================================
+        // EMPLOYEE MANAGEMENT
+        // ============================================
+        function addEmployee() {
+            const name = document.getElementById('newEmployeeName').value.trim();
+            if (!name) {
+                showNotification('Bitte Namen eingeben', 'error');
+                return;
+            }
+
+            // Check if name already exists
+            if (employees.find(e => e.name.toLowerCase() === name.toLowerCase() && e.active !== false)) {
+                showNotification('Mitarbeiter existiert bereits', 'error');
+                return;
+            }
+
+            employeesRef.push({
+                name: name,
+                active: true,
+                createdAt: Date.now()
+            }).then(() => {
+                showNotification('Mitarbeiter hinzugefügt!');
+                document.getElementById('newEmployeeName').value = '';
+            }).catch(err => {
+                showNotification('Fehler beim Speichern', 'error');
+                console.error(err);
+            });
+        }
+
+        function toggleEmployeeActive(id) {
+            const emp = getEmployeeById(id);
+            if (!emp) return;
+
+            employeesRef.child(id).update({ active: !emp.active })
+                .then(() => showNotification(emp.active ? 'Deaktiviert' : 'Aktiviert'))
+                .catch(err => showNotification('Fehler', 'error'));
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Mitarbeiter wirklich löschen? Alle zugehörigen Zeiteinträge bleiben erhalten.')) {
+                employeesRef.child(id).remove()
+                    .then(() => showNotification('Mitarbeiter gelöscht'))
+                    .catch(err => showNotification('Fehler', 'error'));
+            }
+        }
+
+        function renderEmployeeList() {
+            const container = document.getElementById('employeeList');
+            if (!container) return;
+
+            const activeEmployees = employees.filter(e => e.active !== false);
+            const inactiveEmployees = employees.filter(e => e.active === false);
+            const allSorted = [...activeEmployees.sort((a,b) => a.name.localeCompare(b.name)), 
+                              ...inactiveEmployees.sort((a,b) => a.name.localeCompare(b.name))];
+
+            if (allSorted.length === 0) {
+                container.innerHTML = '<div class="empty-state">Noch keine Mitarbeiter angelegt</div>';
+                return;
+            }
+
+            container.innerHTML = allSorted.map(emp => `
+                <div class="employee-item ${emp.active === false ? 'inactive' : ''}">
+                    <div class="employee-name">${emp.name} ${emp.active === false ? '(inaktiv)' : ''}</div>
+                    <div class="employee-actions">
+                        <button class="btn btn-secondary" onclick="toggleEmployeeActive('${emp.id}')">
+                            ${emp.active === false ? 'Aktivieren' : 'Deaktivieren'}
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteEmployee('${emp.id}')">Löschen</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateEmployeeSelects() {
+            const activeEmployees = employees.filter(e => e.active !== false).sort((a,b) => a.name.localeCompare(b.name));
+            
+            // Update employee shift select
+            const empSelect = document.getElementById('employeeSelect');
+            if (empSelect) {
+                empSelect.innerHTML = '<option value="">-- Mitarbeiter wählen --</option>' +
+                    activeEmployees.map(e => `<option value="${e.id}" ${e.id === selectedEmployeeId ? 'selected' : ''}>${e.name}</option>`).join('');
+            }
+
+            // Update timetrack select
+            const ttSelect = document.getElementById('timetrackEmployeeSelect');
+            if (ttSelect) {
+                ttSelect.innerHTML = '<option value="">-- Mitarbeiter wählen --</option>' +
+                    activeEmployees.map(e => `<option value="${e.id}" ${e.id === timetrackEmployeeId ? 'selected' : ''}>${e.name}</option>`).join('');
+            }
+
+            // Show/hide time tracker card
+            updateTimeTrackerVisibility();
+        }
+
+        function saveSelectedEmployee() {
+            selectedEmployeeId = document.getElementById('employeeSelect').value;
+            localStorage.setItem('pizzeria_selected_employee', selectedEmployeeId);
+            renderShifts();
+        }
+
+        function saveTimetrackEmployee() {
+            timetrackEmployeeId = document.getElementById('timetrackEmployeeSelect').value;
+            localStorage.setItem('pizzeria_timetrack_employee', timetrackEmployeeId);
+            updateTimeTrackerVisibility();
+            checkActiveTimer();
+            renderTimeEntries();
+        }
+
+        function updateTimeTrackerVisibility() {
+            const trackerCard = document.getElementById('timeTrackerCard');
+            const entriesCard = document.getElementById('timeEntriesCard');
+            if (timetrackEmployeeId) {
+                trackerCard.style.display = 'block';
+                entriesCard.style.display = 'block';
+            } else {
+                trackerCard.style.display = 'none';
+                entriesCard.style.display = 'none';
             }
         }
 
@@ -844,40 +1450,33 @@
                 return;
             }
 
-            // Check if shift already exists
             if (shifts.find(s => s.date === date)) {
                 showNotification('Schicht für dieses Datum existiert bereits', 'error');
                 return;
             }
 
-            const newShift = {
+            shiftsRef.push({
                 date: date,
                 slots: slots,
                 note: note,
                 employees: [],
                 createdAt: Date.now()
-            };
-
-            // Save to Firebase
-            shiftsRef.push(newShift)
-                .then(() => {
-                    showNotification('Schicht hinzugefügt!');
-                    document.getElementById('shiftNote').value = '';
-                })
-                .catch(err => {
-                    showNotification('Fehler beim Speichern', 'error');
-                    console.error(err);
-                });
+            }).then(() => {
+                showNotification('Schicht hinzugefügt!');
+                document.getElementById('shiftNote').value = '';
+            }).catch(err => {
+                showNotification('Fehler beim Speichern', 'error');
+                console.error(err);
+            });
         }
 
         function quickAddWeekend() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            // Find next Friday that doesn't have all 3 days (Fri, Sat, Sun) already
             let friday = getNextDayOfWeek(today, 5);
             let attempts = 0;
-            const maxAttempts = 52; // Max 1 year ahead
+            const maxAttempts = 52;
             
             while (attempts < maxAttempts) {
                 const saturday = new Date(friday);
@@ -893,7 +1492,6 @@
                 const hasSat = shifts.find(s => s.date === satStr);
                 const hasSun = shifts.find(s => s.date === sunStr);
                 
-                // If at least one day is missing, add the missing ones
                 if (!hasFri || !hasSat || !hasSun) {
                     let added = 0;
                     
@@ -915,7 +1513,6 @@
                     return;
                 }
                 
-                // This weekend is complete, try next week
                 friday.setDate(friday.getDate() + 7);
                 attempts++;
             }
@@ -950,30 +1547,11 @@
                     return;
                 }
                 
-                // Try next week
                 targetDay.setDate(targetDay.getDate() + 7);
                 attempts++;
             }
             
             showNotification(`Keine weiteren ${dayNames[day]}e verfügbar`, 'error');
-        }
-
-        function formatLocalDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function getNextDayOfWeek(date, dayOfWeek) {
-            const result = new Date(date);
-            const diff = (dayOfWeek + 7 - result.getDay()) % 7;
-            result.setDate(result.getDate() + (diff === 0 ? 0 : diff));
-            // If it's today and already past, or exactly today, use it; otherwise find next
-            if (result < date) {
-                result.setDate(result.getDate() + 7);
-            }
-            return result;
         }
 
         function deleteShift(id) {
@@ -991,32 +1569,32 @@
         }
 
         // ============================================
-        // EMPLOYEE ACTIONS
+        // EMPLOYEE SHIFT ACTIONS
         // ============================================
         function signUp(shiftId) {
-            const name = employeeName || document.getElementById('employeeName').value;
-            if (!name) {
-                showNotification('Bitte erst Namen eingeben', 'error');
+            if (!selectedEmployeeId) {
+                showNotification('Bitte erst Mitarbeiter auswählen', 'error');
                 return;
             }
 
             const shift = shifts.find(s => s.id === shiftId);
             if (!shift) return;
 
-            const employees = shift.employees || [];
+            const empName = getEmployeeName(selectedEmployeeId);
+            const shiftEmployees = shift.employees || [];
             
-            if (employees.includes(name)) {
-                showNotification('Du bist bereits eingetragen', 'error');
+            if (shiftEmployees.includes(empName)) {
+                showNotification('Bereits eingetragen', 'error');
                 return;
             }
 
-            if (employees.length >= shift.slots) {
+            if (shiftEmployees.length >= shift.slots) {
                 showNotification('Schicht ist bereits voll', 'error');
                 return;
             }
 
-            employees.push(name);
-            shiftsRef.child(shiftId).update({ employees })
+            shiftEmployees.push(empName);
+            shiftsRef.child(shiftId).update({ employees: shiftEmployees })
                 .then(() => showNotification('Erfolgreich eingetragen!'))
                 .catch(err => showNotification('Fehler', 'error'));
         }
@@ -1025,46 +1603,306 @@
             const shift = shifts.find(s => s.id === shiftId);
             if (!shift) return;
 
-            const employees = (shift.employees || []).filter(e => e !== name);
-            shiftsRef.child(shiftId).update({ employees })
+            const shiftEmployees = (shift.employees || []).filter(e => e !== name);
+            shiftsRef.child(shiftId).update({ employees: shiftEmployees })
                 .then(() => showNotification('Ausgetragen'))
                 .catch(err => showNotification('Fehler', 'error'));
         }
 
-        function saveEmployeeName() {
-            employeeName = document.getElementById('employeeName').value.trim();
-            if (!employeeName) {
-                showNotification('Bitte Namen eingeben', 'error');
+        // ============================================
+        // TIME TRACKING
+        // ============================================
+        function checkActiveTimer() {
+            if (!timetrackEmployeeId) return;
+
+            // Find active entry for this employee
+            const activeEntry = timeEntries.find(e => 
+                e.employeeId === timetrackEmployeeId && e.endTime === null
+            );
+
+            if (activeEntry) {
+                activeTimeEntryId = activeEntry.id;
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('stopBtn').style.display = 'inline-block';
+                document.getElementById('timerDisplay').style.display = 'block';
+                document.getElementById('timerDisplay').classList.add('running');
+                startTimerDisplay(activeEntry.startTime);
+            } else {
+                activeTimeEntryId = null;
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('stopBtn').style.display = 'none';
+                document.getElementById('timerDisplay').style.display = 'none';
+                document.getElementById('timerDisplay').classList.remove('running');
+                if (activeTimerInterval) {
+                    clearInterval(activeTimerInterval);
+                    activeTimerInterval = null;
+                }
+            }
+        }
+
+        function startTimer() {
+            if (!timetrackEmployeeId) {
+                showNotification('Bitte erst Mitarbeiter auswählen', 'error');
                 return;
             }
-            localStorage.setItem('pizzeria_employee_name', employeeName);
-            showNotification('Name gespeichert!');
+
+            const now = Date.now();
+            timeEntriesRef.push({
+                employeeId: timetrackEmployeeId,
+                date: formatLocalDate(new Date()),
+                startTime: now,
+                endTime: null,
+                durationMinutes: null,
+                note: '',
+                createdAt: now
+            }).then(() => {
+                showNotification('Timer gestartet!');
+            }).catch(err => {
+                showNotification('Fehler', 'error');
+                console.error(err);
+            });
+        }
+
+        function stopTimer() {
+            if (!activeTimeEntryId) return;
+
+            const entry = timeEntries.find(e => e.id === activeTimeEntryId);
+            if (!entry) return;
+
+            const now = Date.now();
+            const durationMs = now - entry.startTime;
+            const durationMinutes = Math.round(durationMs / 60000);
+
+            timeEntriesRef.child(activeTimeEntryId).update({
+                endTime: now,
+                durationMinutes: durationMinutes
+            }).then(() => {
+                showNotification(`Gestoppt! ${formatDuration(durationMinutes)}`);
+            }).catch(err => {
+                showNotification('Fehler', 'error');
+            });
+        }
+
+        function startTimerDisplay(startTime) {
+            if (activeTimerInterval) {
+                clearInterval(activeTimerInterval);
+            }
+
+            const updateDisplay = () => {
+                const elapsed = Date.now() - startTime;
+                document.getElementById('timerDisplay').textContent = formatDurationHMS(elapsed);
+            };
+
+            updateDisplay();
+            activeTimerInterval = setInterval(updateDisplay, 1000);
+        }
+
+        function renderTimeEntries() {
+            const container = document.getElementById('timeEntryList');
+            if (!container || !timetrackEmployeeId) return;
+
+            const myEntries = timeEntries
+                .filter(e => e.employeeId === timetrackEmployeeId)
+                .sort((a, b) => b.startTime - a.startTime)
+                .slice(0, 20); // Show last 20 entries
+
+            if (myEntries.length === 0) {
+                container.innerHTML = '<div class="empty-state">Noch keine Einträge</div>';
+                return;
+            }
+
+            container.innerHTML = myEntries.map(entry => {
+                const isRunning = entry.endTime === null;
+                const startDate = new Date(entry.startTime);
+                const dateStr = startDate.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+                const startTimeStr = startDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                const endTimeStr = entry.endTime ? new Date(entry.endTime).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+                
+                let duration = '--';
+                if (isRunning) {
+                    duration = '⏱️ Läuft...';
+                } else if (entry.durationMinutes !== null) {
+                    duration = formatDuration(entry.durationMinutes);
+                }
+
+                return `
+                    <div class="time-entry ${isRunning ? 'running' : ''}">
+                        <div class="time-entry-info">
+                            <div class="time-entry-date">${dateStr}</div>
+                            <div class="time-entry-times">${startTimeStr} - ${endTimeStr}</div>
+                        </div>
+                        <div class="time-entry-duration">${duration}</div>
+                        ${!isRunning ? `<button class="btn btn-secondary" onclick="openEditTimeModal('${entry.id}')">✏️</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openEditTimeModal(entryId) {
+            const entry = timeEntries.find(e => e.id === entryId);
+            if (!entry) return;
+
+            editingTimeEntryId = entryId;
+            
+            const startDate = new Date(entry.startTime);
+            const endDate = entry.endTime ? new Date(entry.endTime) : new Date();
+            
+            document.getElementById('editTimeDate').value = formatLocalDate(startDate);
+            document.getElementById('editTimeStart').value = startDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('editTimeEnd').value = endDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            
+            document.getElementById('editTimeModal').classList.add('active');
+        }
+
+        function closeEditTimeModal() {
+            document.getElementById('editTimeModal').classList.remove('active');
+            editingTimeEntryId = null;
+        }
+
+        function saveEditedTime() {
+            if (!editingTimeEntryId) return;
+
+            const dateStr = document.getElementById('editTimeDate').value;
+            const startTimeStr = document.getElementById('editTimeStart').value;
+            const endTimeStr = document.getElementById('editTimeEnd').value;
+
+            if (!dateStr || !startTimeStr || !endTimeStr) {
+                showNotification('Bitte alle Felder ausfüllen', 'error');
+                return;
+            }
+
+            const startTime = new Date(`${dateStr}T${startTimeStr}:00`).getTime();
+            const endTime = new Date(`${dateStr}T${endTimeStr}:00`).getTime();
+
+            if (endTime <= startTime) {
+                showNotification('Endzeit muss nach Startzeit sein', 'error');
+                return;
+            }
+
+            const durationMinutes = Math.round((endTime - startTime) / 60000);
+
+            timeEntriesRef.child(editingTimeEntryId).update({
+                date: dateStr,
+                startTime: startTime,
+                endTime: endTime,
+                durationMinutes: durationMinutes,
+                editedAt: Date.now()
+            }).then(() => {
+                showNotification('Gespeichert!');
+                closeEditTimeModal();
+            }).catch(err => {
+                showNotification('Fehler', 'error');
+            });
+        }
+
+        function deleteTimeEntry() {
+            if (!editingTimeEntryId) return;
+
+            if (confirm('Eintrag wirklich löschen?')) {
+                timeEntriesRef.child(editingTimeEntryId).remove()
+                    .then(() => {
+                        showNotification('Gelöscht');
+                        closeEditTimeModal();
+                    })
+                    .catch(err => showNotification('Fehler', 'error'));
+            }
+        }
+
+        // ============================================
+        // HOURS SUMMARY
+        // ============================================
+        function initHoursSelectors() {
+            const monthSelect = document.getElementById('hoursMonth');
+            const yearSelect = document.getElementById('hoursYear');
+            if (!monthSelect || !yearSelect) return;
+
+            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+
+            monthSelect.innerHTML = months.map((m, i) => 
+                `<option value="${i}" ${i === currentMonth ? 'selected' : ''}>${m}</option>`
+            ).join('');
+
+            yearSelect.innerHTML = '';
+            for (let y = currentYear; y >= currentYear - 2; y--) {
+                yearSelect.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
+            }
+        }
+
+        function renderHoursSummary() {
+            const container = document.getElementById('hoursSummary');
+            if (!container) return;
+
+            const month = parseInt(document.getElementById('hoursMonth').value);
+            const year = parseInt(document.getElementById('hoursYear').value);
+
+            // Filter entries for selected month
+            const monthEntries = timeEntries.filter(e => {
+                const entryDate = new Date(e.startTime);
+                return entryDate.getMonth() === month && entryDate.getFullYear() === year && e.endTime !== null;
+            });
+
+            // Group by employee
+            const hoursByEmployee = {};
+            monthEntries.forEach(entry => {
+                if (!hoursByEmployee[entry.employeeId]) {
+                    hoursByEmployee[entry.employeeId] = 0;
+                }
+                hoursByEmployee[entry.employeeId] += entry.durationMinutes || 0;
+            });
+
+            const activeEmployees = employees.filter(e => e.active !== false);
+            
+            if (activeEmployees.length === 0) {
+                container.innerHTML = '<div class="empty-state">Keine Mitarbeiter angelegt</div>';
+                return;
+            }
+
+            container.innerHTML = activeEmployees
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(emp => {
+                    const totalMinutes = hoursByEmployee[emp.id] || 0;
+                    const hours = (totalMinutes / 60).toFixed(1);
+                    
+                    return `
+                        <div class="hours-card">
+                            <div class="hours-employee">${emp.name}</div>
+                            <div class="hours-value">${hours}<small>h</small></div>
+                        </div>
+                    `;
+                }).join('');
         }
 
         // ============================================
         // CALENDAR
         // ============================================
-        function getAllEmployees() {
-            const employees = new Set();
+        function getAllShiftEmployees() {
+            const empSet = new Set();
             shifts.forEach(shift => {
-                (shift.employees || []).forEach(emp => employees.add(emp));
+                (shift.employees || []).forEach(emp => empSet.add(emp));
             });
-            return Array.from(employees).sort();
+            return Array.from(empSet).sort();
         }
 
-        function getEmployeeColor(employee) {
-            const allEmployees = getAllEmployees();
-            const index = allEmployees.indexOf(employee);
+        function getEmployeeColor(employeeName) {
+            const allEmployees = getAllShiftEmployees();
+            const index = allEmployees.indexOf(employeeName);
             return employeeColors[index % employeeColors.length];
         }
 
-        function updateEmployeeFilter() {
+        function updateCalendarEmployeeFilter() {
             const select = document.getElementById('calendarFilter');
+            if (!select) return;
+            
             const currentValue = select.value;
-            const employees = getAllEmployees();
+            const shiftEmployees = getAllShiftEmployees();
             
             select.innerHTML = '<option value="">Alle anzeigen</option>';
-            employees.forEach(emp => {
+            shiftEmployees.forEach(emp => {
                 select.innerHTML += `<option value="${emp}" ${emp === currentValue ? 'selected' : ''}>${emp}</option>`;
             });
         }
@@ -1079,28 +1917,23 @@
             const year = currentCalendarDate.getFullYear();
             const month = currentCalendarDate.getMonth();
             
-            // Update title
             const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             document.getElementById('calendarTitle').textContent = `${monthNames[month]} ${year}`;
             
-            // Build calendar grid
             const grid = document.getElementById('calendarGrid');
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
-            const startDay = (firstDay.getDay() + 6) % 7; // Monday = 0
-            const today = new Date().toISOString().split('T')[0];
+            const startDay = (firstDay.getDay() + 6) % 7;
+            const today = getTodayStr();
             
-            // Headers
             const dayHeaders = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             let html = dayHeaders.map(d => `<div class="calendar-header">${d}</div>`).join('');
             
-            // Empty cells before first day
             for (let i = 0; i < startDay; i++) {
                 html += '<div class="calendar-day empty"></div>';
             }
             
-            // Days
             for (let day = 1; day <= lastDay.getDate(); day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const shift = shifts.find(s => s.date === dateStr);
@@ -1110,22 +1943,19 @@
                 if (isToday) classes.push('today');
                 
                 let indicator = '';
-                let isWorking = false;
                 
                 if (shift) {
-                    const employees = shift.employees || [];
+                    const shiftEmployees = shift.employees || [];
                     
                     if (filter) {
-                        // Filtering by employee
-                        if (employees.includes(filter)) {
+                        if (shiftEmployees.includes(filter)) {
                             classes.push('working');
-                            isWorking = true;
                         } else {
                             classes.push('has-shift');
                         }
                     } else {
                         classes.push('has-shift');
-                        const isFull = employees.length >= shift.slots;
+                        const isFull = shiftEmployees.length >= shift.slots;
                         indicator = `<span class="shift-indicator ${isFull ? 'filled' : 'open'}"></span>`;
                     }
                 }
@@ -1139,20 +1969,15 @@
             }
             
             grid.innerHTML = html;
-            
-            // Update stats
             renderStats(filter);
-            
-            // Update legend
             renderLegend(filter);
         }
 
         function renderStats(filter) {
             const container = document.getElementById('statsContainer');
-            const today = new Date().toISOString().split('T')[0];
+            const today = getTodayStr();
             
             if (filter) {
-                // Stats for specific employee
                 const workedShifts = shifts.filter(s => 
                     s.date < today && (s.employees || []).includes(filter)
                 ).length;
@@ -1175,7 +2000,6 @@
                     </div>
                 `;
             } else {
-                // General stats
                 const totalShifts = shifts.length;
                 const upcomingShifts = shifts.filter(s => s.date >= today).length;
                 const openSlots = shifts.filter(s => s.date >= today)
@@ -1214,8 +2038,8 @@
                     </div>
                 `;
             } else {
-                const employees = getAllEmployees();
-                let html = employees.map(emp => `
+                const shiftEmployees = getAllShiftEmployees();
+                let html = shiftEmployees.map(emp => `
                     <div class="legend-item">
                         <div class="legend-color" style="background: ${getEmployeeColor(emp)}"></div>
                         <span>${emp}</span>
@@ -1244,13 +2068,13 @@
             const date = new Date(shift.date + 'T00:00:00');
             const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
             const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const employees = shift.employees || [];
-            const openSlots = shift.slots - employees.length;
+            const shiftEmployees = shift.employees || [];
+            const openSlots = shift.slots - shiftEmployees.length;
             
             let msg = `${dayNames[date.getDay()]}, ${formattedDate}\n`;
             msg += `Benötigt: ${shift.slots} Mitarbeiter\n`;
             if (shift.note) msg += `Notiz: ${shift.note}\n`;
-            msg += `\nEingetragen: ${employees.length > 0 ? employees.join(', ') : 'Niemand'}`;
+            msg += `\nEingetragen: ${shiftEmployees.length > 0 ? shiftEmployees.join(', ') : 'Niemand'}`;
             if (openSlots > 0) msg += `\n\n⚠️ Noch ${openSlots} Platz/Plätze offen!`;
             
             alert(msg);
@@ -1260,82 +2084,92 @@
         // RENDERING
         // ============================================
         function renderShifts() {
-            const container = currentMode === 'admin' 
-                ? document.getElementById('adminShiftList')
-                : document.getElementById('employeeShiftList');
+            const adminContainer = document.getElementById('adminShiftList');
+            const empContainer = document.getElementById('employeeShiftList');
 
-            // Sort by date
             const sortedShifts = [...shifts].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const today = getTodayStr();
             
-            // Filter past shifts for employee view
-            const today = new Date().toISOString().split('T')[0];
-            const filteredShifts = currentMode === 'employee' 
-                ? sortedShifts.filter(s => s.date >= today)
-                : sortedShifts;
-
-            if (filteredShifts.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <p>${currentMode === 'admin' ? 'Noch keine Schichten erstellt' : 'Keine verfügbaren Schichten'}</p>
-                    </div>
-                `;
-                return;
+            // Admin view: all shifts
+            if (adminContainer && currentMode === 'admin') {
+                if (sortedShifts.length === 0) {
+                    adminContainer.innerHTML = '<div class="empty-state">Noch keine Schichten erstellt</div>';
+                } else {
+                    adminContainer.innerHTML = sortedShifts.map(shift => renderShiftItem(shift, today, true)).join('');
+                }
             }
 
-            container.innerHTML = filteredShifts.map(shift => {
-                const date = new Date(shift.date + 'T00:00:00');
-                const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-                const dayName = dayNames[date.getDay()];
-                const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                
-                const employees = shift.employees || [];
-                const openSlots = shift.slots - employees.length;
-                const isPast = shift.date < today;
-
-                let slotsHtml = '';
-                for (let i = 0; i < shift.slots; i++) {
-                    if (employees[i]) {
-                        const canRemove = currentMode === 'admin' || employees[i] === employeeName;
-                        const empColor = getEmployeeColor(employees[i]);
-                        slotsHtml += `
-                            <span class="slot filled" style="background: ${empColor}">
-                                ${employees[i]}
-                                ${canRemove ? `<span class="remove-btn" onclick="signOut('${shift.id}', '${employees[i]}')">✕</span>` : ''}
-                            </span>`;
-                    } else {
-                        slotsHtml += `<span class="slot open">Frei</span>`;
-                    }
+            // Employee view: future shifts only
+            if (empContainer && currentMode === 'employee') {
+                const futureShifts = sortedShifts.filter(s => s.date >= today);
+                if (futureShifts.length === 0) {
+                    empContainer.innerHTML = '<div class="empty-state">Keine verfügbaren Schichten</div>';
+                } else {
+                    empContainer.innerHTML = futureShifts.map(shift => renderShiftItem(shift, today, false)).join('');
                 }
+            }
+        }
 
-                return `
-                    <div class="shift-item" style="${isPast ? 'opacity: 0.5' : ''}">
-                        <div class="shift-info">
-                            <div class="shift-date">${formattedDate}</div>
-                            <div class="shift-day">${dayName}${shift.note ? ' • ' + shift.note : ''}</div>
-                        </div>
-                        <div class="shift-slots">
-                            ${slotsHtml}
-                        </div>
-                        <div class="shift-actions">
-                            ${currentMode === 'admin' 
-                                ? `
-                                    <select onchange="updateSlots('${shift.id}', parseInt(this.value))" class="btn btn-secondary" style="padding: 8px;">
-                                        <option value="1" ${shift.slots === 1 ? 'selected' : ''}>1 MA</option>
-                                        <option value="2" ${shift.slots === 2 ? 'selected' : ''}>2 MA</option>
-                                        <option value="3" ${shift.slots === 3 ? 'selected' : ''}>3 MA</option>
-                                    </select>
-                                    <button class="btn btn-danger" onclick="deleteShift('${shift.id}')">Löschen</button>
-                                `
-                                : openSlots > 0 && !isPast
-                                    ? `<button class="btn btn-success" onclick="signUp('${shift.id}')">Eintragen</button>`
-                                    : isPast 
-                                        ? '<span style="color: rgba(255,255,255,0.4)">Vergangen</span>'
-                                        : '<span style="color: #27ae60">✓ Voll</span>'
-                            }
-                        </div>
-                    </div>
+        function renderShiftItem(shift, today, isAdmin) {
+            const date = new Date(shift.date + 'T00:00:00');
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const dayName = dayNames[date.getDay()];
+            const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            
+            const shiftEmployees = shift.employees || [];
+            const openSlots = shift.slots - shiftEmployees.length;
+            const isPast = shift.date < today;
+            const selectedEmpName = selectedEmployeeId ? getEmployeeName(selectedEmployeeId) : '';
+
+            let slotsHtml = '';
+            for (let i = 0; i < shift.slots; i++) {
+                if (shiftEmployees[i]) {
+                    const canRemove = isAdmin || shiftEmployees[i] === selectedEmpName;
+                    const empColor = getEmployeeColor(shiftEmployees[i]);
+                    slotsHtml += `
+                        <span class="slot filled" style="background: ${empColor}">
+                            ${shiftEmployees[i]}
+                            ${canRemove ? `<span class="remove-btn" onclick="signOut('${shift.id}', '${shiftEmployees[i]}')">✕</span>` : ''}
+                        </span>`;
+                } else {
+                    slotsHtml += `<span class="slot open">Frei</span>`;
+                }
+            }
+
+            let actionsHtml = '';
+            if (isAdmin) {
+                actionsHtml = `
+                    <select onchange="updateSlots('${shift.id}', parseInt(this.value))" class="btn btn-secondary" style="padding: 8px;">
+                        <option value="1" ${shift.slots === 1 ? 'selected' : ''}>1 MA</option>
+                        <option value="2" ${shift.slots === 2 ? 'selected' : ''}>2 MA</option>
+                        <option value="3" ${shift.slots === 3 ? 'selected' : ''}>3 MA</option>
+                    </select>
+                    <button class="btn btn-danger" onclick="deleteShift('${shift.id}')">Löschen</button>
                 `;
-            }).join('');
+            } else {
+                if (openSlots > 0 && !isPast) {
+                    actionsHtml = `<button class="btn btn-success" onclick="signUp('${shift.id}')">Eintragen</button>`;
+                } else if (isPast) {
+                    actionsHtml = '<span style="color: rgba(255,255,255,0.4)">Vergangen</span>';
+                } else {
+                    actionsHtml = '<span style="color: #27ae60">✓ Voll</span>';
+                }
+            }
+
+            return `
+                <div class="shift-item" style="${isPast ? 'opacity: 0.5' : ''}">
+                    <div class="shift-info">
+                        <div class="shift-date">${formattedDate}</div>
+                        <div class="shift-day">${dayName}${shift.note ? ' • ' + shift.note : ''}</div>
+                    </div>
+                    <div class="shift-slots">
+                        ${slotsHtml}
+                    </div>
+                    <div class="shift-actions">
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
         }
 
         // ============================================
